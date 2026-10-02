@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Courses.Domain\Courses.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Behaviors\" />
+    <Folder Include="Common\Models\" />
+    <Folder Include="Course\Commands\" />
+    <Folder Include="Course\DTOs\" />
+    <Folder Include="Course\Queries\" />
+    <Folder Include="Lesson\DTOs\" />
+    <Folder Include="Lesson\Commands\" />
+    <Folder Include="Lesson\Queries\" />
+    <Folder Include="Review\DTOs\" />
+    <Folder Include="Review\Commands\" />
+    <Folder Include="Review\Queries\" />
+    <Folder Include="Test\Commands\" />
+    <Folder Include="Test\DTOs\" />
+    <Folder Include="Test\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <PackageReference Include="MediatR" Version="14.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.12" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="10.0.12" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+
+</Project>

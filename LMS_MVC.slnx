@@ -1,0 +1,30 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/API/">
+    <Project Path="src/API/LMS/LMS.csproj" />
+  </Folder>
+  <Folder Name="/src/API/Shared/">
+    <Project Path="src/API/Shared/Shared.Application/Shared.Application.csproj" />
+    <Project Path="src/API/Shared/Shared.Domain/Shared.Domain.csproj" />
+    <Project Path="src/API/Shared/Shared.Persistence/Shared.Persistence.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/" />
+  <Folder Name="/src/Modules/Courses/">
+    <Project Path="src/Modules/Courses/Courses.Application/Courses.Application.csproj" />
+    <Project Path="src/Modules/Courses/Courses.Domain/Courses.Domain.csproj" />
+    <Project Path="src/Modules/Courses/Courses.Persistence/Courses.Persistence.csproj" />
+    <Project Path="src/Modules/Courses/Courses.Presentation/Courses.Presentation.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/Identity/">
+    <Project Path="src/Modules/Identity/Identity.Application/Identity.Application.csproj" />
+    <Project Path="src/Modules/Identity/Identity.Domain/Identity.Domain.csproj" />
+    <Project Path="src/Modules/Identity/Identity.Persistence/Identity.Persistence.csproj" />
+    <Project Path="src/Modules/Identity/Identity.Presentation/Identity.Presentation.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/Learning/">
+    <Project Path="src/Modules/Learning/Learning.Application/Learning.Application.csproj" />
+    <Project Path="src/Modules/Learning/Learning.Domain/Learning.Domain.csproj" />
+    <Project Path="src/Modules/Learning/Learning.Persistence/Learning.Persistence.csproj" />
+    <Project Path="src/Modules/Learning/Learning.Presentation/Learning.Presentation.csproj" />
+  </Folder>
+</Solution>

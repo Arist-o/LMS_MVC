@@ -1,0 +1,81 @@
+## Результуючі файли компіляції та білду
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## Специфіка ASP.NET Core MVC та Razor
+# Кеш компіляції Razor Views / Pages
+*.Views.dll
+*.Views.pdb
+Generated_Code/
+_ReSharper*/
+
+# Локальні налаштування профілів запуску Kestrel / IIS Express
+**/Properties/launchSettings.json.user
+
+# Тимчасові файли IIS Express
+.vs/**/config/applicationhost.config
+
+## Фронтенд, бандлінг та веб-асети
+# Менеджер клієнтських бібліотек LibMan (якщо бібліотеки відновлюються при білді)
+# Розкоментуйте, якщо клієнтські ліби завантажуються динамічно, а не зберігаються в git:
+# **/wwwroot/lib/*
+
+# NPM / Node (якщо використовується для збірки JS/SCSS у MVC)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Згенеровані бандли та мініфіковані файли (якщо збираються Webpack/Vite/BundleMinifier)
+# *.min.css
+# *.min.js
+# *.css.map
+# *.js.map
+
+# Тимчасовий кеш збирачів
+.cache/
+.sass-cache/
+
+## Visual Studio
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+
+## Rider / ReSharper / JetBrains
+.idea/
+*.DotSettings.user
+
+## VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+## Локальні конфігурації та секрети
+**/appsettings.Development.json
+**/appsettings.*.local.json
+secrets.json
+
+## Тести та покриття коду
+TestResults/
+[Tt]est[Rr]esult*/
+*.trx
+coverage.cobertura.xml
+*.coverage
+*.coveragexml
+
+## Пакетний менеджер NuGet
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.assets.json
+
+## Тимчасові файли ОС
+.DS_Store
+Thumbs.db
+ehthumbs.db
