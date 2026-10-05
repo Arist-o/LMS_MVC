@@ -1,5 +1,6 @@
 using Courses.Persistence;
 using Courses.Application;
+using Courses.Presentation;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +9,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddCoursesPersistence(builder.Configuration);
 builder.Services.AddCoursesApplication();
+builder.Services.AddCoursesPresentation();
 
 var app = builder.Build();
 

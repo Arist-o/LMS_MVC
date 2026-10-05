@@ -1,4 +1,4 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Courses.Application.Common.Interfaces;
@@ -28,7 +28,7 @@ namespace Courses.Application.Common.Behaviors
             return await strategy.ExecuteAsync(async () =>
             {
                 await unitOfWork.BeginTransactionAsync(cancellationToken);
-                logger.LogInformation("[Tx] BEGIN â€” {Request}", requestName);
+                logger.LogInformation("[Tx] BEGIN — {Request}", requestName);
 
                 try
                 {
@@ -37,13 +37,13 @@ namespace Courses.Application.Common.Behaviors
                     await unitOfWork.SaveChangesAsync(cancellationToken);
                     await unitOfWork.CommitTransactionAsync(cancellationToken);
 
-                    logger.LogInformation("[Tx] COMMIT â€” {Request}", requestName);
+                    logger.LogInformation("[Tx] COMMIT — {Request}", requestName);
                     return response;
                 }
                 catch (Exception ex)
                 {
                     await unitOfWork.RollbackTransactionAsync(cancellationToken);
-                    logger.LogError(ex, "[Tx] ROLLBACK â€” {Request}: {Message}", requestName, ex.Message);
+                    logger.LogError(ex, "[Tx] ROLLBACK — {Request}: {Message}", requestName, ex.Message);
                     throw;
                 }
             });

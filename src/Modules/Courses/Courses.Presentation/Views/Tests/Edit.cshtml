@@ -1,0 +1,43 @@
+@model Courses.Application.Test.DTOs.UpdateTestDto
+
+@{
+    ViewData["Title"] = "Редагувати тест";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <div asp-validation-summary="All"></div>
+        </div>
+    }
+
+    <form method="post" asp-action="Edit">
+        <input type="hidden" asp-for="Id" />
+        
+        <div class="mb-3">
+            <label asp-for="LessonId" class="form-label">Урок</label>
+            <select asp-for="LessonId" asp-items="ViewBag.Lessons" class="form-select">
+                <option value="">Оберіть урок...</option>
+            </select>
+            <span asp-validation-for="LessonId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label">Назва</label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        
+        <div class="mb-3">
+            <label asp-for="MaxScore" class="form-label">Максимальний бал</label>
+            <input asp-for="MaxScore" type="number" class="form-control" />
+            <span asp-validation-for="MaxScore" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Зберегти</button>
+        <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
+    </form>
+</div>

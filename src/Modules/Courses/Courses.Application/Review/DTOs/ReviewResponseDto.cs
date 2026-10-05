@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System;
 
-namespace Courses.Application.Review.DTOs
-{
-    public sealed record ReviewResponseDto(
-        Guid CourseId,
-        Guid StudentId,
-        int Rating,
-        string Comment,
-        bool IsApproved,
-        DateTime CreatedAt
-        );
-}
+namespace Courses.Application.Review.DTOs;
+
+public sealed record ReviewResponseDto(
+    Guid Id,
+    Guid CourseId,
+    Guid StudentId,
+    int Rating,
+    string Comment,
+    bool IsApproved,
+    DateTime CreatedAt
+);

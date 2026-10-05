@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Courses.Application.Common.Behaviors;
@@ -29,7 +29,20 @@ namespace Courses.Application.Course.Commands
         {
             public async Task<Result<CourseResponseDto>> Handle(Command request , CancellationToken cancellationToken)
             {
-                return Result<,>.Failure("Not implemented yet.");
+                var course = new Domain.Entities.Course(
+                    request.Dto.InstructorId, 
+                    request.Dto.Title, 
+                    request.Dto.Description, 
+                    request.Dto.IsPublished);
+                
+                await unitOfWork.Courses.AddAsync(course, cancellationToken);
+                return Result<CourseResponseDto>.Success(new CourseResponseDto(
+                    course.Id,
+                    course.InstructorId, 
+                    course.Title, 
+                    course.Description, 
+                    course.IsPublished, 
+                    course.CreatedAt));
             }
         }
     }

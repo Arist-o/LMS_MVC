@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -27,3 +27,4 @@ namespace Courses.Application.Common.Behaviors
             return response;
         }
     }
+}

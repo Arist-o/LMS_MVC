@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+using System;
 
-namespace Courses.Application.Review.DTOs
-{
-    public sealed record CreateReviewDto(
-        Guid CourseId,
-        Guid StudentId,
-        int Rating,
-        string Comment,
-        bool IsApproved
-        );
-}
+namespace Courses.Application.Review.DTOs;
+
+public sealed record CreateReviewDto(
+    Guid CourseId,
+    Guid StudentId,
+    int Rating,
+    string Comment,
+    bool IsApproved
+);

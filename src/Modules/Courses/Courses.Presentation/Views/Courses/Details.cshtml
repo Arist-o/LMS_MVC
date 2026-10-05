@@ -1,0 +1,26 @@
+@model Courses.Application.Course.DTOs.CourseResponseDto
+
+@{
+    ViewData["Title"] = "Деталі курсу";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Title</h5>
+            <h6 class="card-subtitle mb-2 text-muted">ID: @Model.Id</h6>
+            <p class="card-text">@Model.Description</p>
+            
+            <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item"><strong>Інструктор:</strong> @Model.InstructorId</li>
+                <li class="list-group-item"><strong>Статус:</strong> @(Model.IsPublished ? "Опубліковано" : "Чернетка")</li>
+                <li class="list-group-item"><strong>Створено:</strong> @Model.CreatedAt.ToLocalTime().ToString("g")</li>
+            </ul>
+
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Редагувати</a>
+            <a asp-action="Index" class="btn btn-secondary">Назад до списку</a>
+        </div>
+    </div>
+</div>

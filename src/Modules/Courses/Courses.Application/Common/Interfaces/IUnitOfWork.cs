@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Courses.Domain.Entities;
@@ -10,9 +10,9 @@ namespace Courses.Application.Common.Interfaces
     {
         IRepository<Domain.Entities.Course> Courses { get; }
 
-        IRepository<Lesson> Lessons { get; }
+        IRepository<Domain.Entities.Lesson> Lessons { get; }
 
-        IRepository<Test> Tests { get; }
+        IRepository<Domain.Entities.Test> Tests { get; }
 
         IRepository<DomainReview> Reviews { get; }
 

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System;
 
-namespace Courses.Application.Review.DTOs
-{
-    internal class UpdateReviewDto
-    {
-    }
-}
+namespace Courses.Application.Review.DTOs;
+
+public sealed record UpdateReviewDto(
+    Guid Id,
+    int Rating,
+    string Comment,
+    bool IsApproved
+);
