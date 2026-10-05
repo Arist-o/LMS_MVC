@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="AGENTS.md" />
+    <File Path="DATABASE.md" />
+  </Folder>
   <Folder Name="/src/" />
   <Folder Name="/src/API/">
     <Project Path="src/API/LMS/LMS.csproj" />
@@ -19,12 +23,14 @@
   <Folder Name="/src/Modules/Identity/">
     <Project Path="src/Modules/Identity/Identity.Application/Identity.Application.csproj" />
     <Project Path="src/Modules/Identity/Identity.Domain/Identity.Domain.csproj" />
+    <Project Path="src/Modules/Identity/Identity.Integration/Identity.Integration.csproj" Id="d09309ac-c925-4710-8925-8b32b8108f6b" />
     <Project Path="src/Modules/Identity/Identity.Persistence/Identity.Persistence.csproj" />
     <Project Path="src/Modules/Identity/Identity.Presentation/Identity.Presentation.csproj" />
   </Folder>
   <Folder Name="/src/Modules/Learning/">
     <Project Path="src/Modules/Learning/Learning.Application/Learning.Application.csproj" />
     <Project Path="src/Modules/Learning/Learning.Domain/Learning.Domain.csproj" />
+    <Project Path="src/Modules/Learning/Learning.Integration/Learning.Integration.csproj" Id="e82fefee-14ae-4040-9f0a-937af6dba898" />
     <Project Path="src/Modules/Learning/Learning.Persistence/Learning.Persistence.csproj" />
     <Project Path="src/Modules/Learning/Learning.Presentation/Learning.Presentation.csproj" />
   </Folder>
