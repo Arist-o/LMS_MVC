@@ -11,16 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Behaviors\" />
-    <Folder Include="Common\Models\" />
-    <Folder Include="Course\Commands\" />
-    <Folder Include="Course\DTOs\" />
     <Folder Include="Course\Queries\" />
     <Folder Include="Lesson\DTOs\" />
     <Folder Include="Lesson\Commands\" />
     <Folder Include="Lesson\Queries\" />
-    <Folder Include="Review\DTOs\" />
-    <Folder Include="Review\Commands\" />
     <Folder Include="Review\Queries\" />
     <Folder Include="Test\Commands\" />
     <Folder Include="Test\DTOs\" />

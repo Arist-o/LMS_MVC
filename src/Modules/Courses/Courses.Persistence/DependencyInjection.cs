@@ -12,7 +12,7 @@ namespace Courses.Persistence
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCoursesPersistence(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<CoursesDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnectionSqlServer"),
