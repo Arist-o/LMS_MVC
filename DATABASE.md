@@ -64,3 +64,36 @@ Table learning.TestAttempts {
   Score int
   AttemptDate datetime
 }
+## Приклад EF Core конфігурації (Fluent API) для Soft FK
+
+Щоб уникнути помилок міжмодульної взаємодії: **Soft FK налаштовується виключно як звичайна скалярна колонка**. 
+НІЯКИХ викликів `HasOne()`, `WithMany()` або `HasForeignKey()` для зв'язків між різними схемами/модулями.
+
+```csharp
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Courses.Domain.Entities;
+
+namespace Courses.Persistence.Configurations;
+
+public class CourseConfiguration : IEntityTypeConfiguration<Course>
+{
+    public void Configure(EntityTypeBuilder<Course> builder)
+    {
+        // Вказати назву таблиці та схему модуля
+        builder.ToTable("Courses", "courses");
+        
+        builder.HasKey(x => x.Id);
+
+        // ПРАВИЛЬНО: звичайна конфігурація колонки для Soft FK
+        builder.Property(x => x.InstructorId)
+               .IsRequired();
+        
+        // СУВОРО ЗАБОРОНЕНО (викличе помилку міграції, бо User в іншому контексті):
+        // builder.HasOne(x => x.User).WithMany().HasForeignKey(x => x.InstructorId);
+
+        builder.Property(x => x.Title)
+               .HasMaxLength(200)
+               .IsRequired();
+    }
+}
