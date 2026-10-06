@@ -19,8 +19,16 @@
                 <li class="list-group-item"><strong>Створено:</strong> @Model.CreatedAt.ToLocalTime().ToString("g")</li>
             </ul>
 
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Редагувати</a>
+            @if (User.IsInRole("Instructor") || User.IsInRole("Admin"))
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Редагувати</a>
+            }
             <a asp-action="Index" class="btn btn-secondary">Назад до списку</a>
+            
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a asp-controller="Enrollments" asp-action="Enroll" class="btn btn-success ms-2">Записатися на курс</a>
+            }
         </div>
     </div>
 </div>

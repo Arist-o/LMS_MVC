@@ -26,6 +26,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="Index">Курси</a>
                         </li>
+                        @if (User.IsInRole("Student"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Enrollments" asp-action="Index">Моє навчання</a>
+                            </li>
+                        }
                     </ul>
                     <ul class="navbar-nav">
                         @if (Context.Request.Cookies.ContainsKey("jwt"))

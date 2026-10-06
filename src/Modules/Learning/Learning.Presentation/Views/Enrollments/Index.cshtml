@@ -1,0 +1,50 @@
+@model List<Learning.Application.Enrollment.DTOs.EnrollmentResponseDto>
+
+@{
+    ViewData["Title"] = "Моє навчання";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>@ViewData["Title"]</h2>
+        <a asp-action="Enroll" class="btn btn-primary">Записатися на новий курс</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">Ви ще не записані на жоден курс.</div>
+    }
+    else
+    {
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID Курсу</th>
+                    <th>Дата запису</th>
+                    <th>Статус</th>
+                    <th>Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.CourseId</td>
+                        <td>@item.EnrollmentDate.ToLocalTime().ToString("g")</td>
+                        <td>
+                            <span class="badge @(item.Status == "Active" ? "bg-success" : (item.Status == "Completed" ? "bg-primary" : "bg-secondary"))">
+                                @(item.Status == "Active" ? "Активний" : (item.Status == "Completed" ? "Завершено" : "Скасовано"))
+                            </span>
+                        </td>
+                        <td>
+                            @if (item.Status == "Active")
+                            {
+                                <a asp-action="SubmitTest" asp-route-courseId="@item.CourseId" class="btn btn-sm btn-outline-primary">Скласти тест</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

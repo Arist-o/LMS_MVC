@@ -4,6 +4,8 @@ using Courses.Presentation;
 using Identity.Persistence;
 using Identity.Application;
 using Identity.Presentation;
+using Learning.Persistence;
+using Learning.Application;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -20,6 +22,10 @@ builder.Services.AddCoursesPresentation();
 builder.Services.AddIdentityPersistence(builder.Configuration);
 builder.Services.AddIdentityApplication();
 builder.Services.AddIdentityPresentation();
+
+builder.Services.AddLearningPersistence(builder.Configuration);
+builder.Services.AddLearningApplication();
+// builder.Services.AddLearningPresentation(); // Not yet added, will do it if needed or just use controllers from reference
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

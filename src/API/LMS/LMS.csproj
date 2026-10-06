@@ -20,6 +20,9 @@
     <ProjectReference Include="..\..\Modules\Identity\Identity.Application\Identity.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Identity\Identity.Presentation\Identity.Presentation.csproj" />
     <ProjectReference Include="..\..\Modules\Identity\Identity.Persistence\Identity.Persistence.csproj" />
+    <ProjectReference Include="..\..\Modules\Learning\Learning.Application\Learning.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Learning\Learning.Persistence\Learning.Persistence.csproj" />
+    <ProjectReference Include="..\..\Modules\Learning\Learning.Presentation\Learning.Presentation.csproj" />
   </ItemGroup>
 
 </Project>

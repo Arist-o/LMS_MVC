@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Courses.Domain\Courses.Domain.csproj" />
     <ProjectReference Include="..\..\Identity\Identity.Integration\Identity.Integration.csproj" />
+    <ProjectReference Include="..\Courses.Integration\Courses.Integration.csproj" />
   </ItemGroup>
 
   <ItemGroup>

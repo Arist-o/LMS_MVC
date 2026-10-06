@@ -5,10 +5,11 @@ using Courses.Application.Common.Models;
 using Courses.Application.Review.Commands;
 using Courses.Application.Review.DTOs;
 using Courses.Application.Review.Queries;
+using Courses.Application.Course.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Courses.Application.Course.Queries;
 
 namespace Courses.Presentation.Controllers;
 
@@ -40,6 +41,7 @@ public class ReviewsController(IMediator mediator) : Controller
         return View(result.Value);
     }
 
+    [Authorize]
     [HttpGet("create")]
     public async Task<IActionResult> Create(CancellationToken ct)
     {
@@ -47,6 +49,7 @@ public class ReviewsController(IMediator mediator) : Controller
         return View(new CreateReviewDto(Guid.Empty, Guid.Empty, 5, string.Empty, false));
     }
 
+    [Authorize]
     [HttpPost("create")]
     public async Task<IActionResult> Create(CreateReviewDto dto, CancellationToken ct)
     {
@@ -67,6 +70,7 @@ public class ReviewsController(IMediator mediator) : Controller
         return View(dto);
     }
 
+    [Authorize]
     [HttpGet("edit/{id:guid}")]
     public async Task<IActionResult> Edit(Guid id, CancellationToken ct)
     {
@@ -87,6 +91,7 @@ public class ReviewsController(IMediator mediator) : Controller
         return View(dto);
     }
 
+    [Authorize]
     [HttpPost("edit/{id:guid}")]
     public async Task<IActionResult> Edit(Guid id, UpdateReviewDto dto, CancellationToken ct)
     {
@@ -124,6 +129,7 @@ public class ReviewsController(IMediator mediator) : Controller
         return View(result.Value);
     }
 
+    [Authorize]
     [HttpGet("delete/{id:guid}")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
     {
@@ -136,6 +142,7 @@ public class ReviewsController(IMediator mediator) : Controller
         return View(result.Value);
     }
 
+    [Authorize]
     [HttpPost("delete/{id:guid}"), ActionName("Delete")]
     public async Task<IActionResult> DeleteConfirmed(Guid id, CancellationToken ct)
     {

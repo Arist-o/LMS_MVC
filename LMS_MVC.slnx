@@ -14,7 +14,7 @@
   </Folder>
   <Folder Name="/src/Modules/" />
   <Folder Name="/src/Modules/Courses/">
-    <Project Path="Modules/Courses/Courses.Integration/Courses.Integration.csproj" Id="697243a5-1076-4971-9a98-2b0438657c91" />
+    <Project Path="src/Modules/Courses/Courses.Integration/Courses.Integration.csproj" Id="697243a5-1076-4971-9a98-2b0438657c91" />
     <Project Path="src/Modules/Courses/Courses.Application/Courses.Application.csproj" />
     <Project Path="src/Modules/Courses/Courses.Domain/Courses.Domain.csproj" />
     <Project Path="src/Modules/Courses/Courses.Persistence/Courses.Persistence.csproj" />

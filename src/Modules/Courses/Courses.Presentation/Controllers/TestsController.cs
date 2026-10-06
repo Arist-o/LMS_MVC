@@ -5,10 +5,11 @@ using Courses.Application.Common.Models;
 using Courses.Application.Test.Commands;
 using Courses.Application.Test.DTOs;
 using Courses.Application.Test.Queries;
+using Courses.Application.Lesson.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Courses.Application.Lesson.Queries;
 
 namespace Courses.Presentation.Controllers;
 
@@ -44,6 +45,7 @@ public class TestsController(IMediator mediator) : Controller
         return View(result.Value);
     }
 
+    [Authorize(Roles = "Instructor,Admin")]
     [HttpGet("create")]
     public async Task<IActionResult> Create(CancellationToken ct)
     {
@@ -51,6 +53,7 @@ public class TestsController(IMediator mediator) : Controller
         return View(new CreateTestDto(Guid.Empty, string.Empty, 0));
     }
 
+    [Authorize(Roles = "Instructor,Admin")]
     [HttpPost("create")]
     public async Task<IActionResult> Create(CreateTestDto dto, CancellationToken ct)
     {
@@ -79,6 +82,7 @@ public class TestsController(IMediator mediator) : Controller
         return View(result.Value);
     }
 
+    [Authorize(Roles = "Instructor,Admin")]
     [HttpGet("{id:guid}/edit")]
     public async Task<IActionResult> Edit(Guid id, CancellationToken ct)
     {
@@ -90,6 +94,7 @@ public class TestsController(IMediator mediator) : Controller
         return View(dto);
     }
 
+    [Authorize(Roles = "Instructor,Admin")]
     [HttpPost("{id:guid}/edit")]
     public async Task<IActionResult> Edit(Guid id, UpdateTestDto dto, CancellationToken ct)
     {
@@ -112,6 +117,7 @@ public class TestsController(IMediator mediator) : Controller
         return View(dto);
     }
 
+    [Authorize(Roles = "Instructor,Admin")]
     [HttpGet("{id:guid}/delete")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
     {
@@ -120,6 +126,7 @@ public class TestsController(IMediator mediator) : Controller
         return View(result.Value);
     }
 
+    [Authorize(Roles = "Instructor,Admin")]
     [HttpPost("{id:guid}/delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id, CancellationToken ct)

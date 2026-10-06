@@ -4,10 +4,11 @@ using System.Threading.Tasks;
 using Courses.Application.Lesson.Commands;
 using Courses.Application.Lesson.DTOs;
 using Courses.Application.Lesson.Queries;
+using Courses.Application.Course.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Courses.Application.Course.Queries;
 
 namespace Courses.Presentation.Controllers;
 
@@ -34,6 +35,7 @@ public class LessonsController(IMediator mediator) : Controller
         return View(result.Value);
     }
 
+    [Authorize(Roles = "Instructor,Admin")]
     [HttpGet("create")]
     public async Task<IActionResult> Create(CancellationToken ct)
     {
@@ -41,6 +43,7 @@ public class LessonsController(IMediator mediator) : Controller
         return View();
     }
 
+    [Authorize(Roles = "Instructor,Admin")]
     [HttpPost("create")]
     public async Task<IActionResult> Create(CreateLessonDto dto, CancellationToken ct)
     {
@@ -62,6 +65,7 @@ public class LessonsController(IMediator mediator) : Controller
         return View(dto);
     }
 
+    [Authorize(Roles = "Instructor,Admin")]
     [HttpGet("edit/{id:guid}")]
     public async Task<IActionResult> Edit(Guid id, CancellationToken ct)
     {
@@ -83,6 +87,7 @@ public class LessonsController(IMediator mediator) : Controller
         return View(dto);
     }
 
+    [Authorize(Roles = "Instructor,Admin")]
     [HttpPost("edit/{id:guid}")]
     public async Task<IActionResult> Edit(Guid id, UpdateLessonDto dto, CancellationToken ct)
     {
@@ -120,6 +125,7 @@ public class LessonsController(IMediator mediator) : Controller
         return View(result.Value);
     }
 
+    [Authorize(Roles = "Instructor,Admin")]
     [HttpGet("delete/{id:guid}")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
     {
@@ -132,6 +138,7 @@ public class LessonsController(IMediator mediator) : Controller
         return View(result.Value);
     }
 
+    [Authorize(Roles = "Instructor,Admin")]
     [HttpPost("delete/{id:guid}"), ActionName("Delete")]
     public async Task<IActionResult> DeleteConfirmed(Guid id, CancellationToken ct)
     {
