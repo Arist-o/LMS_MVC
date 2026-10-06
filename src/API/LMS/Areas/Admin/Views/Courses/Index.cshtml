@@ -1,0 +1,61 @@
+@using Courses.Application.Common.Models
+@using Courses.Application.Course.DTOs
+@model PagedList<CourseResponseDto>
+
+@{
+    ViewData["Title"] = "Курси";
+}
+
+<h2>Курси</h2>
+<div class="mb-3 d-flex justify-content-between align-items-center">
+    <a asp-action="Create" class="btn btn-primary">Створити курс</a>
+    <form method="get" class="d-flex">
+        <input type="text" name="search" class="form-control me-2" placeholder="Пошук..." value="@Context.Request.Query["search"]" />
+        <button type="submit" class="btn btn-secondary">Шукати</button>
+    </form>
+</div>
+
+<table class="table table-striped table-hover mt-3">
+    <thead>
+        <tr>
+            <th>Назва</th>
+            <th>Опис</th>
+            <th>Викладач</th>
+            <th>Статус</th>
+            <th>Створено</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model.Items)
+        {
+            <tr>
+                <td>@course.Title</td>
+                <td>@course.Description.Substring(0, Math.Min(course.Description.Length, 50))...</td>
+                <td>@course.InstructorName</td>
+                <td>
+                    @(course.IsPublished ? Html.Raw("<span class='badge bg-success'>Опубліковано</span>") : Html.Raw("<span class='badge bg-warning'>Чернетка</span>"))
+                </td>
+                <td>@course.CreatedAt.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@course.Id" class="btn btn-sm btn-primary">Редагувати</a>
+                    <a asp-action="Delete" asp-route-id="@course.Id" class="btn btn-sm btn-danger">Видалити</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav>
+    <ul class="pagination">
+        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+            <a class="page-link" href="?page=@(Model.Page - 1)&search=@Context.Request.Query["search"]">Попередня</a>
+        </li>
+        <li class="page-item disabled">
+            <span class="page-link">@Model.Page / @Model.TotalPages</span>
+        </li>
+        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+            <a class="page-link" href="?page=@(Model.Page + 1)&search=@Context.Request.Query["search"]">Наступна</a>
+        </li>
+    </ul>
+</nav>

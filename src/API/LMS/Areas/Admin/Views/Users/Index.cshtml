@@ -1,0 +1,69 @@
+@using Identity.Application.Common.Models
+@using Identity.Application.Users.DTOs
+@model PagedList<UserDto>
+
+@{
+    ViewData["Title"] = "Управління користувачами";
+}
+
+<h2>Користувачі</h2>
+
+<form method="get" class="mb-3 d-flex">
+    <input type="text" name="search" class="form-control me-2" placeholder="Пошук..." value="@Context.Request.Query["search"]" />
+    <button type="submit" class="btn btn-primary">Шукати</button>
+</form>
+
+<table class="table table-striped table-hover mt-3">
+    <thead>
+        <tr>
+            <th>ПІБ</th>
+            <th>Email</th>
+            <th>Роль</th>
+            <th>Статус</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Items)
+        {
+            <tr>
+                <td>@user.LastName @user.FirstName</td>
+                <td>@user.Email</td>
+                <td>
+                    <form asp-area="Admin" asp-controller="Users" asp-action="ChangeRole" asp-route-id="@user.Id" method="post" class="d-flex align-items-center">
+                        <select name="role" class="form-select form-select-sm me-2" style="width: auto;">
+                            <option value="Student" selected="@(user.Role == "Student")">Student</option>
+                            <option value="Instructor" selected="@(user.Role == "Instructor")">Instructor</option>
+                            <option value="Admin" selected="@(user.Role == "Admin")">Admin</option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-outline-secondary">Змінити</button>
+                    </form>
+                </td>
+                <td>
+                    @(user.IsBlocked ? Html.Raw("<span class='badge bg-danger'>Заблоковано</span>") : Html.Raw("<span class='badge bg-success'>Активний</span>"))
+                </td>
+                <td>
+                    <form asp-area="Admin" asp-controller="Users" asp-action="ToggleBlock" asp-route-id="@user.Id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm @(user.IsBlocked ? "btn-success" : "btn-danger")">
+                            @(user.IsBlocked ? "Розблокувати" : "Заблокувати")
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav>
+    <ul class="pagination">
+        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+            <a class="page-link" href="?page=@(Model.Page - 1)&search=@Context.Request.Query["search"]">Попередня</a>
+        </li>
+        <li class="page-item disabled">
+            <span class="page-link">@Model.Page / @Model.TotalPages</span>
+        </li>
+        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+            <a class="page-link" href="?page=@(Model.Page + 1)&search=@Context.Request.Query["search"]">Наступна</a>
+        </li>
+    </ul>
+</nav>

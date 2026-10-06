@@ -10,6 +10,7 @@ public class User : BaseEntity
     public string Role { get; private set; }
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
+    public bool IsBlocked { get; private set; }
     
     // For EF Core
     private User() { }
@@ -21,5 +22,10 @@ public class User : BaseEntity
         Role = role;
         FirstName = firstName;
         LastName = lastName;
+        IsBlocked = false;
     }
+
+    public void Block() => IsBlocked = true;
+    public void Unblock() => IsBlocked = false;
+    public void ChangeRole(string newRole) => Role = newRole;
 }

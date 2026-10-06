@@ -31,6 +31,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(100);
 
+        builder.Property(u => u.IsBlocked)
+            .IsRequired()
+            .HasDefaultValue(false);
+
         builder.HasIndex(u => u.Email).IsUnique();
     }
 }

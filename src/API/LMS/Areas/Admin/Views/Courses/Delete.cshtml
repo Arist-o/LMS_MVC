@@ -1,0 +1,36 @@
+@model Courses.Application.Course.DTOs.CourseResponseDto
+
+@{
+    ViewData["Title"] = "Видалення курсу";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    <div class="alert alert-danger" role="alert">
+        Ви впевнені, що хочете видалити цей курс? Ця дія є незворотною.
+    </div>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <div asp-validation-summary="All"></div>
+        </div>
+    }
+
+    <div class="card mt-3 mb-4">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Title</h5>
+            <p class="card-text">@Model.Description</p>
+            <ul class="list-unstyled">
+                <li><strong>ID:</strong> @Model.Id</li>
+                <li><strong>Статус:</strong> @(Model.IsPublished ? "Опубліковано" : "Чернетка")</li>
+            </ul>
+        </div>
+    </div>
+
+    <form asp-action="DeleteConfirmed" method="post">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button type="submit" class="btn btn-danger">Підтвердити видалення</button>
+        <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
+    </form>
+</div>
