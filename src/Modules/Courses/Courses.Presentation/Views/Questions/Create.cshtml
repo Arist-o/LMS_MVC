@@ -1,0 +1,99 @@
+@model Courses.Application.Test.DTOs.AddQuestionToTestDto
+
+@{
+    ViewData["Title"] = "Додати питання";
+}
+
+<h1>Додати питання до тесту @ViewBag.TestTitle</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TestId" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Text" class="control-label">Текст питання</label>
+                <input asp-for="Text" class="form-control" />
+                <span asp-validation-for="Text" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Points" class="control-label">Кількість балів</label>
+                <input asp-for="Points" class="form-control" type="number" min="0" />
+                <span asp-validation-for="Points" class="text-danger"></span>
+            </div>
+
+            <h4>Варіанти відповідей</h4>
+            <div id="options-container">
+                @if (Model.Options != null && Model.Options.Count > 0)
+                {
+                    for (int i = 0; i < Model.Options.Count; i++)
+                    {
+                        <div class="option-row form-group mb-2 d-flex align-items-center">
+                            <input name="Options[@i].Text" value="@Model.Options[i].Text" class="form-control me-2" placeholder="Текст варіанту" required />
+                            <div class="form-check me-2">
+                                <input name="Options[@i].IsCorrect" value="true" class="form-check-input" type="checkbox" @(Model.Options[i].IsCorrect ? "checked" : "") />
+                                <input name="Options[@i].IsCorrect" value="false" type="hidden" />
+                                <label class="form-check-label">Правильно</label>
+                            </div>
+                            <button type="button" class="btn btn-danger btn-sm remove-option">Видалити</button>
+                        </div>
+                    }
+                }
+            </div>
+
+            <button type="button" id="add-option-btn" class="btn btn-secondary mb-3">Додати варіант</button>
+
+            <div class="form-group">
+                <input type="submit" value="Зберегти" class="btn btn-primary" />
+                <a asp-controller="Tests" asp-action="Details" asp-route-id="@Model.TestId" class="btn btn-outline-secondary">Назад</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let optionIndex = document.querySelectorAll('.option-row').length;
+
+            document.getElementById("add-option-btn").addEventListener("click", function () {
+                const container = document.getElementById("options-container");
+                const row = document.createElement("div");
+                row.className = "option-row form-group mb-2 d-flex align-items-center";
+                row.innerHTML = `
+                    <input name="Options[${optionIndex}].Text" class="form-control me-2" placeholder="Текст варіанту" required />
+                    <div class="form-check me-2">
+                        <input name="Options[${optionIndex}].IsCorrect" value="true" class="form-check-input" type="checkbox" />
+                        <input name="Options[${optionIndex}].IsCorrect" value="false" type="hidden" />
+                        <label class="form-check-label">Правильно</label>
+                    </div>
+                    <button type="button" class="btn btn-danger btn-sm remove-option">Видалити</button>
+                `;
+                container.appendChild(row);
+                optionIndex++;
+            });
+
+            document.getElementById("options-container").addEventListener("click", function (e) {
+                if (e.target.classList.contains("remove-option")) {
+                    e.target.closest(".option-row").remove();
+                    
+                    // Reindex options
+                    const rows = document.querySelectorAll('.option-row');
+                    rows.forEach((row, index) => {
+                        row.querySelector('input[type="text"], input[name$=".Text"]').name = `Options[${index}].Text`;
+                        
+                        const checkbox = row.querySelector('input[type="checkbox"]');
+                        checkbox.name = `Options[${index}].IsCorrect`;
+                        
+                        const hidden = row.querySelector('input[type="hidden"]');
+                        hidden.name = `Options[${index}].IsCorrect`;
+                    });
+                    optionIndex = rows.length;
+                }
+            });
+        });
+    </script>
+}

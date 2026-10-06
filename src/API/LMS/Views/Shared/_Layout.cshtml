@@ -38,6 +38,15 @@
                                 <a class="nav-link text-dark" asp-area="Admin" asp-controller="Home" asp-action="Index">Адмінка</a>
                             </li>
                         }
+                        @if (User.IsInRole("Instructor") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Lessons" asp-action="Index">Уроки</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Tests" asp-action="Index">Тести</a>
+                            </li>
+                        }
                     </ul>
                     <ul class="navbar-nav">
                         @if (Context.Request.Cookies.ContainsKey("jwt"))

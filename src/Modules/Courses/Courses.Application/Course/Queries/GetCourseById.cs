@@ -1,3 +1,4 @@
+using AutoMapper;
 using Courses.Application.Common.Behaviors;
 using Courses.Application.Common.Interfaces;
 using Courses.Application.Common.Models;
@@ -11,7 +12,7 @@ public static class GetCourseById
 {
     public sealed record Query(Guid Id) : IQuery<Result<CourseResponseDto>>;
 
-    public sealed class Handler(IUnitOfWork unitOfWork, IUserIntegrationService userIntegrationService) : IRequestHandler<Query, Result<CourseResponseDto>>
+    public sealed class Handler(IUnitOfWork unitOfWork, IUserIntegrationService userIntegrationService, IMapper mapper) : IRequestHandler<Query, Result<CourseResponseDto>>
     {
         public async Task<Result<CourseResponseDto>> Handle(Query request, CancellationToken cancellationToken)
         {

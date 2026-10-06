@@ -13,6 +13,8 @@ namespace Courses.Application.Common.Interfaces
         IRepository<Domain.Entities.Lesson> Lessons { get; }
 
         IRepository<Domain.Entities.Test> Tests { get; }
+        
+        IRepository<Domain.Entities.Question> Questions { get; }
 
         IRepository<DomainReview> Reviews { get; }
 

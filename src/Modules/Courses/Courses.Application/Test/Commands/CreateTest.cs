@@ -1,3 +1,4 @@
+using AutoMapper;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ public static class CreateTest
         }
     }
 
-    public sealed class Handler(IUnitOfWork unitOfWork) : IRequestHandler<Command, Result<TestResponseDto>>
+    public sealed class Handler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<Command, Result<TestResponseDto>>
     {
         public async Task<Result<TestResponseDto>> Handle(Command request, CancellationToken cancellationToken)
         {
@@ -35,14 +36,7 @@ public static class CreateTest
             );
 
             await unitOfWork.Tests.AddAsync(test, cancellationToken);
-            return Result<TestResponseDto>.Success(new TestResponseDto(
-                test.Id,
-                test.LessonId,
-                test.Title,
-                test.MaxScore,
-                test.CreatedAt,
-                test.UpdatedAt
-            ));
+            return Result<TestResponseDto>.Success(mapper.Map<TestResponseDto>(test));
         }
     }
 }

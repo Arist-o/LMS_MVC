@@ -19,6 +19,7 @@ public static class DependencyInjection
         });
 
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+        services.AddAutoMapper(cfg => cfg.AddMaps(typeof(DependencyInjection).Assembly));
         services.AddScoped<IUserIntegrationService, UserIntegrationService>();
 
         return services;

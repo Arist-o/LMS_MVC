@@ -22,7 +22,7 @@ public static class LoginUser
         }
     }
 
-    public sealed class Handler(IIdentityUnitOfWork unitOfWork, IJwtProvider jwtProvider) : IRequestHandler<Query, Result<TokenResponseDto>>
+    public sealed class Handler(IIdentityUnitOfWork unitOfWork, IJwtProvider jwtProvider, AutoMapper.IMapper mapper) : IRequestHandler<Query, Result<TokenResponseDto>>
     {
         public async Task<Result<TokenResponseDto>> Handle(Query request, CancellationToken cancellationToken)
         {

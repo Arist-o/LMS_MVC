@@ -80,20 +80,37 @@ public class EnrollmentsController(IMediator mediator, ICourseIntegrationService
         return View(dto);
     }
 
-    [HttpGet("submit-test")]
-    public IActionResult SubmitTest(Guid courseId)
-    {
-        return View(new SubmitTestAttemptDto(courseId, Guid.Empty, 0));
-    }
-
-    [HttpPost("submit-test")]
-    public async Task<IActionResult> SubmitTest(SubmitTestAttemptDto dto, CancellationToken ct)
+    [Route("/Tests/Take/{testId:guid}")]
+    [HttpGet]
+    public async Task<IActionResult> TakeTest(Guid testId, CancellationToken ct)
     {
         var studentId = GetStudentId();
         if (studentId == Guid.Empty) return Unauthorized();
 
+        var query = new Learning.Application.TestAttempt.Queries.GetTestAttemptForm.Query(testId);
+        var result = await mediator.Send(query, ct);
+
+        if (!result.IsSuccess)
+            return NotFound(result.Error);
+
+        return View(result.Value);
+    }
+
+    [Route("/Tests/Take/{testId:guid}")]
+    [HttpPost]
+    public async Task<IActionResult> TakeTest(Guid testId, SubmitTestAttemptDto dto, CancellationToken ct)
+    {
+        var studentId = GetStudentId();
+        if (studentId == Guid.Empty) return Unauthorized();
+
+        dto.TestId = testId;
+
         if (!ModelState.IsValid)
-            return View(dto);
+        {
+            var query = new Learning.Application.TestAttempt.Queries.GetTestAttemptForm.Query(testId);
+            var queryResult = await mediator.Send(query, ct);
+            return View(queryResult.IsSuccess ? queryResult.Value : null);
+        }
 
         var command = new SubmitTestAttempt.Command(studentId, dto);
         var result = await mediator.Send(command, ct);
@@ -104,6 +121,8 @@ public class EnrollmentsController(IMediator mediator, ICourseIntegrationService
         }
 
         ModelState.AddModelError(string.Empty, result.Error);
-        return View(dto);
+        var reloadQuery = new Learning.Application.TestAttempt.Queries.GetTestAttemptForm.Query(testId);
+        var reloadResult = await mediator.Send(reloadQuery, ct);
+        return View(reloadResult.IsSuccess ? reloadResult.Value : null);
     }
 }

@@ -1,3 +1,4 @@
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ public static class GetInstructorsLookup
 {
     public sealed record Query() : IRequest<Result<List<Courses.Application.Common.Models.LookupDto>>>;
 
-    public sealed class Handler(IUserIntegrationService userIntegrationService) : IRequestHandler<Query, Result<List<Courses.Application.Common.Models.LookupDto>>>
+    public sealed class Handler(IUserIntegrationService userIntegrationService, IMapper mapper) : IRequestHandler<Query, Result<List<Courses.Application.Common.Models.LookupDto>>>
     {
         public async Task<Result<List<Courses.Application.Common.Models.LookupDto>>> Handle(Query request, CancellationToken cancellationToken)
         {

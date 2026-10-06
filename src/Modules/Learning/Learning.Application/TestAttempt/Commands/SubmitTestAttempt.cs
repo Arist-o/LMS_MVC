@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Courses.Integration;
 using FluentValidation;
 using Learning.Application.Common.Behaviors;
@@ -20,25 +21,26 @@ public static class SubmitTestAttempt
         public Validator()
         {
             RuleFor(x => x.StudentId).NotEmpty();
-            RuleFor(x => x.Dto.CourseId).NotEmpty();
             RuleFor(x => x.Dto.TestId).NotEmpty();
-            RuleFor(x => x.Dto.Score).GreaterThanOrEqualTo(0);
         }
     }
 
-    public sealed class Handler(ILearningUnitOfWork unitOfWork, ICourseIntegrationService courseIntegration) 
+    public sealed class Handler(ILearningUnitOfWork unitOfWork, ICourseIntegrationService courseIntegration, IMapper mapper) 
         : IRequestHandler<Command, Result<TestAttemptResponseDto>>
     {
         public async Task<Result<TestAttemptResponseDto>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var testExists = await courseIntegration.TestExistsAsync(request.Dto.TestId, cancellationToken);
-            if (!testExists)
+            var evaluationResult = await courseIntegration.EvaluateTestAsync(request.Dto.TestId, request.Dto.Answers, cancellationToken);
+            if (evaluationResult == null)
             {
-                return Result<TestAttemptResponseDto>.Failure("Test does not exist.");
+                return Result<TestAttemptResponseDto>.Failure("Failed to evaluate test.");
             }
 
+            var courseId = evaluationResult.CourseId;
+            var score = evaluationResult.Score;
+
             var enrollment = await unitOfWork.Enrollments.FirstOrDefaultAsync(
-                e => e.StudentId == request.StudentId && e.CourseId == request.Dto.CourseId, cancellationToken);
+                e => e.StudentId == request.StudentId && e.CourseId == courseId, cancellationToken);
 
             if (enrollment == null)
             {
@@ -50,11 +52,11 @@ public static class SubmitTestAttempt
                 return Result<TestAttemptResponseDto>.Failure("Enrollment is not active.");
             }
 
-            var attempt = Domain.Entities.TestAttempt.Create(enrollment.Id, request.Dto.TestId, request.Dto.Score);
+            var attempt = Domain.Entities.TestAttempt.Create(enrollment.Id, request.Dto.TestId, score);
             enrollment.AddTestAttempt(attempt);
             await unitOfWork.TestAttempts.AddAsync(attempt, cancellationToken);
             
-            var dto = new TestAttemptResponseDto(attempt.Id, attempt.EnrollmentId, attempt.TestId, attempt.Score, attempt.AttemptDate);
+            var dto = mapper.Map<TestAttemptResponseDto>(attempt);
             return Result<TestAttemptResponseDto>.Success(dto);
         }
     }

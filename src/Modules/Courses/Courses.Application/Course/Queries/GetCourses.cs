@@ -1,3 +1,4 @@
+using AutoMapper;
 using Courses.Application.Common.Interfaces;
 using Courses.Application.Common.Models;
 using Courses.Application.Course.DTOs;
@@ -15,7 +16,7 @@ public static class GetCourses
         string? Search = null, 
         string? SortBy = null) : IRequest<Result<PagedList<CourseResponseDto>>>;
 
-    public sealed class Handler(IUnitOfWork unitOfWork, IUserIntegrationService userIntegrationService) : IRequestHandler<Query, Result<PagedList<CourseResponseDto>>>
+    public sealed class Handler(IUnitOfWork unitOfWork, IUserIntegrationService userIntegrationService, IMapper mapper) : IRequestHandler<Query, Result<PagedList<CourseResponseDto>>>
     {
         public async Task<Result<PagedList<CourseResponseDto>>> Handle(Query request, CancellationToken cancellationToken)
         {

@@ -90,6 +90,54 @@ namespace Courses.Persistence.Migrations
                     b.ToTable("Lessons", (string)null);
                 });
 
+            modelBuilder.Entity("Courses.Domain.Entities.Question", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TestId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("Questions", (string)null);
+                });
+
+            modelBuilder.Entity("Courses.Domain.Entities.QuestionOption", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsCorrect")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("QuestionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("QuestionOptions", (string)null);
+                });
+
             modelBuilder.Entity("Courses.Domain.Entities.Review", b =>
                 {
                     b.Property<Guid>("Id")
@@ -168,6 +216,24 @@ namespace Courses.Persistence.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("Courses.Domain.Entities.Question", b =>
+                {
+                    b.HasOne("Courses.Domain.Entities.Test", null)
+                        .WithMany("Questions")
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Courses.Domain.Entities.QuestionOption", b =>
+                {
+                    b.HasOne("Courses.Domain.Entities.Question", null)
+                        .WithMany("Options")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Courses.Domain.Entities.Review", b =>
                 {
                     b.HasOne("Courses.Domain.Entities.Course", "Course")
@@ -201,6 +267,16 @@ namespace Courses.Persistence.Migrations
                 {
                     b.Navigation("Test")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Courses.Domain.Entities.Question", b =>
+                {
+                    b.Navigation("Options");
+                });
+
+            modelBuilder.Entity("Courses.Domain.Entities.Test", b =>
+                {
+                    b.Navigation("Questions");
                 });
 #pragma warning restore 612, 618
         }

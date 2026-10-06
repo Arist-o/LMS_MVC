@@ -25,7 +25,7 @@ public static class RegisterUser
         }
     }
 
-    public sealed class Handler(IIdentityUnitOfWork unitOfWork) : IRequestHandler<Command, Result<Guid>>
+    public sealed class Handler(IIdentityUnitOfWork unitOfWork, AutoMapper.IMapper mapper) : IRequestHandler<Command, Result<Guid>>
     {
         public async Task<Result<Guid>> Handle(Command request, CancellationToken cancellationToken)
         {
@@ -56,7 +56,6 @@ public static class RegisterUser
                 request.Dto.LastName);
 
             await unitOfWork.Users.AddAsync(finalUser, cancellationToken);
-            await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result<Guid>.Success(finalUser.Id);
         }

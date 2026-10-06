@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Courses.Integration;
 using FluentValidation;
 using Learning.Application.Common.Behaviors;
@@ -24,7 +25,7 @@ public static class EnrollStudent
         }
     }
 
-    public sealed class Handler(ILearningUnitOfWork unitOfWork, ICourseIntegrationService courseIntegration) 
+    public sealed class Handler(ILearningUnitOfWork unitOfWork, ICourseIntegrationService courseIntegration, IMapper mapper) 
         : IRequestHandler<Command, Result<EnrollmentResponseDto>>
     {
         public async Task<Result<EnrollmentResponseDto>> Handle(Command request, CancellationToken cancellationToken)
@@ -46,7 +47,7 @@ public static class EnrollStudent
             await unitOfWork.Enrollments.AddAsync(enrollment, cancellationToken);
             // SaveChanges is handled by TransactionBehavior
 
-            var dto = new EnrollmentResponseDto(enrollment.Id, enrollment.CourseId, enrollment.EnrollmentDate, enrollment.Status.ToString());
+            var dto = mapper.Map<EnrollmentResponseDto>(enrollment);
             return Result<EnrollmentResponseDto>.Success(dto);
         }
     }

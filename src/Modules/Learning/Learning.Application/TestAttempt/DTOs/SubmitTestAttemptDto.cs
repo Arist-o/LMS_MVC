@@ -1,5 +1,10 @@
 using System;
+using System.Collections.Generic;
 
 namespace Learning.Application.TestAttempt.DTOs;
 
-public record SubmitTestAttemptDto(Guid CourseId, Guid TestId, int Score);
+public class SubmitTestAttemptDto
+{
+    public Guid TestId { get; set; }
+    public Dictionary<Guid, Guid> Answers { get; set; } = new();
+}

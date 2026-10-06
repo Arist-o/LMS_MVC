@@ -1,3 +1,4 @@
+using AutoMapper;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,32 +13,26 @@ namespace Courses.Application.Lesson.Queries;
 
 public static class GetLessons
 {
-    public sealed record Query(int Page = 1, int PageSize = 10) : IQuery<Result<PagedList<LessonResponseDto>>>;
+    public sealed record Query(GetLessonsDto Dto) : IQuery<Result<PagedList<LessonResponseDto>>>;
 
-    public sealed class Handler(IUnitOfWork unitOfWork) : IRequestHandler<Query, Result<PagedList<LessonResponseDto>>>
+    public sealed class Handler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<Query, Result<PagedList<LessonResponseDto>>>
     {
         public async Task<Result<PagedList<LessonResponseDto>>> Handle(Query request, CancellationToken cancellationToken)
         {
             var query = unitOfWork.Lessons.Query()
+                .Include(l => l.Course)
                 .OrderBy(l => l.CourseId)
                 .ThenBy(l => l.OrderIndex);
 
             var totalCount = await query.CountAsync(cancellationToken);
 
             var items = await query
-                .Skip((request.Page - 1) * request.PageSize)
-                .Take(request.PageSize)
-                .Select(l => new LessonResponseDto(
-                    l.Id,
-                    l.CourseId,
-                    l.Title,
-                    l.VideoUrl,
-                    l.OrderIndex,
-                    l.CreatedAt
-                ))
+                .Skip((request.Dto.Page - 1) * request.Dto.PageSize)
+                .Take(request.Dto.PageSize)
                 .ToListAsync(cancellationToken);
 
-            var pagedList = new PagedList<LessonResponseDto>(items, totalCount, request.Page, request.PageSize);
+            var dtos = mapper.Map<System.Collections.Generic.List<LessonResponseDto>>(items);
+            var pagedList = new PagedList<LessonResponseDto>(dtos, totalCount, request.Dto.Page, request.Dto.PageSize);
             return Result<PagedList<LessonResponseDto>>.Success(pagedList);
         }
     }

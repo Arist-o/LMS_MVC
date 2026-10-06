@@ -1,3 +1,4 @@
+using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -13,7 +14,7 @@ public static class GetCoursesLookup
 {
     public sealed record Query() : IRequest<Result<List<LookupDto>>>;
 
-    public sealed class Handler(IUnitOfWork unitOfWork) : IRequestHandler<Query, Result<List<LookupDto>>>
+    public sealed class Handler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<Query, Result<List<LookupDto>>>
     {
         public async Task<Result<List<LookupDto>>> Handle(Query request, CancellationToken cancellationToken)
         {

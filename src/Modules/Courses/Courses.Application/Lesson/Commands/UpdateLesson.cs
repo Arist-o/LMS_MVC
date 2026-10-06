@@ -1,3 +1,4 @@
+using AutoMapper;
 using System.Threading;
 using System.Threading.Tasks;
 using Courses.Application.Common.Behaviors;
@@ -25,7 +26,7 @@ public static class UpdateLesson
         }
     }
 
-    public sealed class Handler(IUnitOfWork unitOfWork) : IRequestHandler<Command, Result<LessonResponseDto>>
+    public sealed class Handler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<Command, Result<LessonResponseDto>>
     {
         public async Task<Result<LessonResponseDto>> Handle(Command request, CancellationToken cancellationToken)
         {
@@ -51,14 +52,7 @@ public static class UpdateLesson
             lesson.UpdatedAtTime();
 
             unitOfWork.Lessons.Update(lesson);
-            return Result<LessonResponseDto>.Success(new LessonResponseDto(
-                lesson.Id,
-                lesson.CourseId,
-                lesson.Title,
-                lesson.VideoUrl,
-                lesson.OrderIndex,
-                lesson.CreatedAt
-            ));
+            return Result<LessonResponseDto>.Success(mapper.Map<LessonResponseDto>(lesson));
         }
     }
 }

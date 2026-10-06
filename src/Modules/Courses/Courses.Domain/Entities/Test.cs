@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Courses.Domain.Common;
@@ -18,6 +18,9 @@ namespace Courses.Domain.Entities
         public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
 
         public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow;
+
+        private readonly List<Question> _questions = [];
+        public IReadOnlyCollection<Question> Questions => _questions.AsReadOnly();
 
 
         private Test()
@@ -61,6 +64,12 @@ namespace Courses.Domain.Entities
             if (maxScore < 0)
                 throw new ArgumentException("MaxScore cannot be negative", nameof(maxScore));
             this.MaxScore = maxScore;
+        }
+
+        public void AddQuestion(Question question)
+        {
+            if (question == null) throw new ArgumentNullException(nameof(question));
+            _questions.Add(question);
         }
     }
 }

@@ -1,3 +1,4 @@
+using AutoMapper;
 using System;
 using System.Linq;
 using System.Threading;
@@ -19,7 +20,7 @@ public static class GetTests
         string? Search = null,
         string? SortBy = null) : IQuery<Result<PagedList<TestResponseDto>>>;
 
-    public sealed class Handler(IUnitOfWork unitOfWork) : IRequestHandler<Query, Result<PagedList<TestResponseDto>>>
+    public sealed class Handler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<Query, Result<PagedList<TestResponseDto>>>
     {
         public async Task<Result<PagedList<TestResponseDto>>> Handle(Query request, CancellationToken cancellationToken)
         {

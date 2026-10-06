@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using Courses.Application.Common.Interfaces;
@@ -28,7 +28,7 @@ namespace Courses.Application.Common.Behaviors
             return await strategy.ExecuteAsync(async () =>
             {
                 await unitOfWork.BeginTransactionAsync(cancellationToken);
-                logger.LogInformation("[Tx] BEGIN � {Request}", requestName);
+                logger.LogInformation("[Tx] BEGIN — {Request}", requestName);
 
                 try
                 {
@@ -37,13 +37,29 @@ namespace Courses.Application.Common.Behaviors
                     await unitOfWork.SaveChangesAsync(cancellationToken);
                     await unitOfWork.CommitTransactionAsync(cancellationToken);
 
-                    logger.LogInformation("[Tx] COMMIT � {Request}", requestName);
+                    logger.LogInformation("[Tx] COMMIT — {Request}", requestName);
                     return response;
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    await unitOfWork.RollbackTransactionAsync(cancellationToken);
+                    logger.LogWarning(ex, "[Tx] ROLLBACK (Concurrency) — {Request}: {Message}", requestName, ex.Message);
+
+                    var responseType = typeof(TResponse);
+                    if (responseType.IsGenericType && responseType.GetGenericTypeDefinition() == typeof(Courses.Application.Common.Models.Result<>))
+                    {
+                        var failureMethod = responseType.GetMethod("Failure");
+                        if (failureMethod != null)
+                        {
+                            return (TResponse)failureMethod.Invoke(null, new object[] { "Операція не вдалася: дані були змінені або видалені іншим процесом чи користувачем." })!;
+                        }
+                    }
+                    throw;
                 }
                 catch (Exception ex)
                 {
                     await unitOfWork.RollbackTransactionAsync(cancellationToken);
-                    logger.LogError(ex, "[Tx] ROLLBACK � {Request}: {Message}", requestName, ex.Message);
+                    logger.LogError(ex, "[Tx] ROLLBACK — {Request}: {Message}", requestName, ex.Message);
                     throw;
                 }
             });

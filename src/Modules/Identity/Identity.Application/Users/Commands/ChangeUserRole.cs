@@ -18,7 +18,7 @@ public static class ChangeUserRole
         }
     }
 
-    public sealed class Handler(IIdentityUnitOfWork unitOfWork) : IRequestHandler<Command, Result<bool>>
+    public sealed class Handler(IIdentityUnitOfWork unitOfWork, AutoMapper.IMapper mapper) : IRequestHandler<Command, Result<bool>>
     {
         public async Task<Result<bool>> Handle(Command request, CancellationToken cancellationToken)
         {
@@ -32,7 +32,6 @@ public static class ChangeUserRole
             user.ChangeRole(request.Role);
             
             unitOfWork.Users.Update(user);
-            await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result<bool>.Success(true);
         }

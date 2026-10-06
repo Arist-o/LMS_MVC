@@ -47,10 +47,10 @@ public class TestsController(IMediator mediator) : Controller
 
     [Authorize(Roles = "Instructor,Admin")]
     [HttpGet("create")]
-    public async Task<IActionResult> Create(CancellationToken ct)
+    public async Task<IActionResult> Create([FromQuery] Guid? lessonId, CancellationToken ct)
     {
         await PopulateLessonsDropdown(ct);
-        return View(new CreateTestDto(Guid.Empty, string.Empty, 0));
+        return View(new CreateTestDto(lessonId ?? Guid.Empty, string.Empty, 0));
     }
 
     [Authorize(Roles = "Instructor,Admin")]
@@ -67,7 +67,7 @@ public class TestsController(IMediator mediator) : Controller
         var result = await mediator.Send(command, ct);
 
         if (result.IsSuccess)
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), new { id = result.Value.Id });
 
         ModelState.AddModelError(string.Empty, result.Error);
         await PopulateLessonsDropdown(ct);

@@ -1,3 +1,4 @@
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,7 +26,7 @@ namespace Courses.Application.Course.Commands
             }
         }
 
-        public sealed class Handler(IUnitOfWork unitOfWork, Identity.Integration.IUserIntegrationService userIntegrationService) : IRequestHandler<Command, Result<CourseResponseDto>>
+        public sealed class Handler(IUnitOfWork unitOfWork, Identity.Integration.IUserIntegrationService userIntegrationService, IMapper mapper) : IRequestHandler<Command, Result<CourseResponseDto>>
         {
             public async Task<Result<CourseResponseDto>> Handle(Command request , CancellationToken cancellationToken)
             {
@@ -38,14 +39,7 @@ namespace Courses.Application.Course.Commands
                 await unitOfWork.Courses.AddAsync(course, cancellationToken);
                 var instructorName = await userIntegrationService.GetUserNameByIdAsync(course.InstructorId) ?? "Unknown";
 
-                return Result<CourseResponseDto>.Success(new CourseResponseDto(
-                    course.Id,
-                    course.InstructorId,
-                    instructorName,
-                    course.Title, 
-                    course.Description, 
-                    course.IsPublished, 
-                    course.CreatedAt));
+                return Result<CourseResponseDto>.Success(mapper.Map<CourseResponseDto>(course));
             }
         }
     }

@@ -8,7 +8,7 @@ public static class ToggleUserBlock
 {
     public sealed record Command(Guid UserId) : IRequest<Result<bool>>;
 
-    public sealed class Handler(IIdentityUnitOfWork unitOfWork) : IRequestHandler<Command, Result<bool>>
+    public sealed class Handler(IIdentityUnitOfWork unitOfWork, AutoMapper.IMapper mapper) : IRequestHandler<Command, Result<bool>>
     {
         public async Task<Result<bool>> Handle(Command request, CancellationToken cancellationToken)
         {
@@ -29,7 +29,6 @@ public static class ToggleUserBlock
             }
 
             unitOfWork.Users.Update(user);
-            await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result<bool>.Success(user.IsBlocked);
         }

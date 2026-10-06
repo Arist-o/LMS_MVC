@@ -1,3 +1,4 @@
+using AutoMapper;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ public static class GetReviewById
 {
     public sealed record Query(Guid Id) : IQuery<Result<ReviewResponseDto>>;
 
-    public sealed class Handler(IUnitOfWork unitOfWork) : IRequestHandler<Query, Result<ReviewResponseDto>>
+    public sealed class Handler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<Query, Result<ReviewResponseDto>>
     {
         public async Task<Result<ReviewResponseDto>> Handle(Query request, CancellationToken cancellationToken)
         {

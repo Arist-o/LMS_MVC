@@ -39,7 +39,24 @@
                         <td>
                             @if (item.Status == "Active")
                             {
-                                <a asp-action="SubmitTest" asp-route-courseId="@item.CourseId" class="btn btn-sm btn-outline-primary">Скласти тест</a>
+                                @if (item.AvailableTests != null && item.AvailableTests.Any())
+                                {
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Скласти тест
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            @foreach (var test in item.AvailableTests)
+                                            {
+                                                <li><a class="dropdown-item" asp-action="TakeTest" asp-route-testId="@test.Id">@test.Title</a></li>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Немає тестів</span>
+                                }
                             }
                         </td>
                     </tr>

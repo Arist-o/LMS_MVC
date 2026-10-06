@@ -1,3 +1,4 @@
+using AutoMapper;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ public static class DeleteTest
         }
     }
 
-    public sealed class Handler(IUnitOfWork unitOfWork) : IRequestHandler<Command, Result<bool>>
+    public sealed class Handler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<Command, Result<bool>>
     {
         public async Task<Result<bool>> Handle(Command request, CancellationToken cancellationToken)
         {

@@ -13,7 +13,7 @@ public static class GetUsers
         int PageSize = 10,
         string? Search = null) : IRequest<Result<PagedList<UserDto>>>;
 
-    public sealed class Handler(IIdentityUnitOfWork unitOfWork) : IRequestHandler<Query, Result<PagedList<UserDto>>>
+    public sealed class Handler(IIdentityUnitOfWork unitOfWork, AutoMapper.IMapper mapper) : IRequestHandler<Query, Result<PagedList<UserDto>>>
     {
         public async Task<Result<PagedList<UserDto>>> Handle(Query request, CancellationToken cancellationToken)
         {
@@ -36,14 +36,7 @@ public static class GetUsers
                 .Take(request.PageSize)
                 .ToListAsync(cancellationToken);
 
-            var items = dbItems.Select(u => new UserDto(
-                u.Id,
-                u.Email,
-                u.FirstName,
-                u.LastName,
-                u.Role,
-                u.IsBlocked
-            )).ToList();
+            var items = dbItems.Select(mapper.Map<UserDto>).ToList();
 
             var pagedList = new PagedList<UserDto>(items, totalCount, request.Page, request.PageSize);
             return Result<PagedList<UserDto>>.Success(pagedList);

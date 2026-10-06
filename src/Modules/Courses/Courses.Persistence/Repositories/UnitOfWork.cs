@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Courses.Application.Common.Interfaces;
@@ -21,6 +21,8 @@ namespace Courses.Persistence.Repositories
         private IRepository<Test>? _testsRepository;
 
         private IRepository<Review>? _reviewsRepository;
+        
+        private IRepository<Question>? _questionsRepository;
 
         public UnitOfWork(CoursesDbContext context)
         {
@@ -35,6 +37,9 @@ namespace Courses.Persistence.Repositories
 
         public IRepository<Test> Tests
             => _testsRepository ??= new Repository<Test>(_context);
+
+        public IRepository<Question> Questions
+            => _questionsRepository ??= new Repository<Question>(_context);
 
         public IRepository<Review> Reviews
             => _reviewsRepository ??= new Repository<Review>(_context);

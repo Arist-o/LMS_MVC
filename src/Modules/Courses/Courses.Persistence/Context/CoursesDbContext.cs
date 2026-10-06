@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -12,6 +12,9 @@ namespace Courses.Persistence.Context
         public DbSet<Course> Courses => Set<Course>();
         public DbSet<Test> Tests => Set<Test>();
         public DbSet<Lesson> Lessons => Set<Lesson>();
+
+        public DbSet<Question> Questions => Set<Question>();
+        public DbSet<QuestionOption> QuestionOptions => Set<QuestionOption>();
 
         public DbSet<Review> Reviews => Set<Review>();
 

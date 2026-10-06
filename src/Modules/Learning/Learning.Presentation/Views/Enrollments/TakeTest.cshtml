@@ -1,0 +1,54 @@
+@model Courses.Integration.TestAttemptFormDto
+
+@{
+    ViewData["Title"] = Model.TestTitle;
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="TakeTest" asp-route-testId="@Model.TestId" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                @if (!Model.Questions.Any())
+                {
+                    <div class="alert alert-warning">Цей тест ще не має питань.</div>
+                }
+                else
+                {
+                    var qIndex = 1;
+                    foreach (var question in Model.Questions)
+                    {
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">@qIndex. @question.Text</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">Балів: @question.Points</h6>
+                                
+                                <div class="mt-3">
+                                    @foreach (var option in question.Options)
+                                    {
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="Answers[@question.Id]" id="opt_@option.Id" value="@option.Id" required />
+                                            <label class="form-check-label" for="opt_@option.Id">
+                                                @option.Text
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        qIndex++;
+                    }
+
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary">Завершити тест</button>
+                        <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
+                    </div>
+                }
+            </form>
+        </div>
+    </div>
+</div>

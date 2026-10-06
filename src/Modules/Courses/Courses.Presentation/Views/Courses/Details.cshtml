@@ -21,14 +21,26 @@
 
             @if (User.IsInRole("Instructor") || User.IsInRole("Admin"))
             {
-                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Редагувати</a>
+                <ul class="nav nav-tabs mb-3" id="courseTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">Інформація</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="lessons-tab" data-bs-toggle="tab" data-bs-target="#lessons" type="button" role="tab" aria-controls="lessons" aria-selected="false">Уроки</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="courseTabsContent">
+                    <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+                        <a asp-controller="Lessons" asp-action="Create" asp-route-courseId="@Model.Id" class="btn btn-success">Додати урок</a>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Редагувати</a>
+                    </div>
+                    <div class="tab-pane fade" id="lessons" role="tabpanel" aria-labelledby="lessons-tab">
+                        <div class="alert alert-info">Щоб переглянути або створити уроки, перейдіть до <a asp-controller="Lessons" asp-action="Index">розділу Уроків</a>.</div>
+                        <a asp-controller="Lessons" asp-action="Create" asp-route-courseId="@Model.Id" class="btn btn-success">Створити перший урок</a>
+                    </div>
+                </div>
             }
             <a asp-action="Index" class="btn btn-secondary">Назад до списку</a>
-            
-            @if (User.Identity?.IsAuthenticated == true)
-            {
-                <a asp-controller="Enrollments" asp-action="Enroll" class="btn btn-success ms-2">Записатися на курс</a>
-            }
         </div>
     </div>
 </div>

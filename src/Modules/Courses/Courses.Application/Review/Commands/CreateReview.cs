@@ -1,3 +1,4 @@
+using AutoMapper;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ public static class CreateReview
         }
     }
 
-    public sealed class Handler(IUnitOfWork unitOfWork) : IRequestHandler<Command, Result<ReviewResponseDto>>
+    public sealed class Handler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<Command, Result<ReviewResponseDto>>
     {
         public async Task<Result<ReviewResponseDto>> Handle(Command request, CancellationToken cancellationToken)
         {

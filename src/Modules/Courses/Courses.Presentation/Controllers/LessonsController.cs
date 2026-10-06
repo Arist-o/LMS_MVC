@@ -24,10 +24,11 @@ public class LessonsController(IMediator mediator) : Controller
         }
     }
 
+    [Authorize(Roles = "Instructor,Admin")]
     [HttpGet]
-    public async Task<IActionResult> Index([FromQuery] int page = 1, [FromQuery] int pageSize = 10, CancellationToken ct = default)
+    public async Task<IActionResult> Index([FromQuery] GetLessonsDto dto, CancellationToken ct = default)
     {
-        var result = await mediator.Send(new GetLessons.Query(page, pageSize), ct);
+        var result = await mediator.Send(new GetLessons.Query(dto), ct);
         if (!result.IsSuccess)
         {
             return BadRequest(result.Error);
@@ -37,10 +38,10 @@ public class LessonsController(IMediator mediator) : Controller
 
     [Authorize(Roles = "Instructor,Admin")]
     [HttpGet("create")]
-    public async Task<IActionResult> Create(CancellationToken ct)
+    public async Task<IActionResult> Create([FromQuery] Guid? courseId, CancellationToken ct)
     {
         await PopulateCoursesDropdown(ct);
-        return View();
+        return View(new CreateLessonDto(courseId ?? Guid.Empty, string.Empty, string.Empty, 1));
     }
 
     [Authorize(Roles = "Instructor,Admin")]

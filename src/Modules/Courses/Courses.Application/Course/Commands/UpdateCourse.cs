@@ -1,3 +1,4 @@
+using AutoMapper;
 using Courses.Application.Common.Behaviors;
 using Courses.Application.Common.Interfaces;
 using Courses.Application.Common.Models;
@@ -21,7 +22,7 @@ public static class UpdateCourse
         }
     }
 
-    public sealed class Handler(IUnitOfWork unitOfWork, Identity.Integration.IUserIntegrationService userIntegrationService) : IRequestHandler<Command, Result<CourseResponseDto>>
+    public sealed class Handler(IUnitOfWork unitOfWork, Identity.Integration.IUserIntegrationService userIntegrationService, IMapper mapper) : IRequestHandler<Command, Result<CourseResponseDto>>
     {
         public async Task<Result<CourseResponseDto>> Handle(Command request, CancellationToken cancellationToken)
         {
@@ -40,14 +41,7 @@ public static class UpdateCourse
             
             var instructorName = await userIntegrationService.GetUserNameByIdAsync(course.InstructorId) ?? "Unknown";
 
-            return Result<CourseResponseDto>.Success(new CourseResponseDto(
-                course.Id,
-                course.InstructorId,
-                instructorName,
-                course.Title,
-                course.Description,
-                course.IsPublished,
-                course.CreatedAt));
+            return Result<CourseResponseDto>.Success(mapper.Map<CourseResponseDto>(course));
         }
     }
 }

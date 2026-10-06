@@ -15,7 +15,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Course ID</th>
+            <th>Course Title</th>
             <th>Title</th>
             <th>Video URL</th>
             <th>Order Index</th>
@@ -27,7 +27,7 @@
         @foreach (var item in Model.Items)
         {
             <tr>
-                <td>@item.CourseId</td>
+                <td>@item.CourseTitle</td>
                 <td>@item.Title</td>
                 <td>@item.VideoUrl</td>
                 <td>@item.OrderIndex</td>

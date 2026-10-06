@@ -1,3 +1,4 @@
+using AutoMapper;
 using System.Threading;
 using System.Threading.Tasks;
 using Courses.Application.Common.Behaviors;
@@ -24,7 +25,7 @@ public static class CreateLesson
         }
     }
 
-    public sealed class Handler(IUnitOfWork unitOfWork) : IRequestHandler<Command, Result<LessonResponseDto>>
+    public sealed class Handler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<Command, Result<LessonResponseDto>>
     {
         public async Task<Result<LessonResponseDto>> Handle(Command request, CancellationToken cancellationToken)
         {
@@ -42,14 +43,7 @@ public static class CreateLesson
             );
 
             await unitOfWork.Lessons.AddAsync(lesson, cancellationToken);
-            return Result<LessonResponseDto>.Success(new LessonResponseDto(
-                lesson.Id,
-                lesson.CourseId,
-                lesson.Title,
-                lesson.VideoUrl,
-                lesson.OrderIndex,
-                lesson.CreatedAt
-            ));
+            return Result<LessonResponseDto>.Success(mapper.Map<LessonResponseDto>(lesson));
         }
     }
 }
