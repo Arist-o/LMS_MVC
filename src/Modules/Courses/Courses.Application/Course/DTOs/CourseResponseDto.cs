@@ -8,6 +8,7 @@ namespace Courses.Application.Course.DTOs
     public sealed record CourseResponseDto(
         Guid Id,
         Guid InstructorId,
+        string InstructorName,
         string Title,
         string Description,
         bool IsPublished,

@@ -1,28 +1,25 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Courses.Application.Common.Models;
+using Identity.Integration;
 using MediatR;
 
 namespace Courses.Application.Course.Queries;
 
 public static class GetStudentsLookup
 {
-    public sealed record Query() : IRequest<Result<List<LookupDto>>>;
+    public sealed record Query() : IRequest<Result<List<Courses.Application.Common.Models.LookupDto>>>;
 
-    public sealed class Handler : IRequestHandler<Query, Result<List<LookupDto>>>
+    public sealed class Handler(IUserIntegrationService userIntegrationService) : IRequestHandler<Query, Result<List<Courses.Application.Common.Models.LookupDto>>>
     {
-        public Task<Result<List<LookupDto>>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<List<Courses.Application.Common.Models.LookupDto>>> Handle(Query request, CancellationToken cancellationToken)
         {
-            // STUB: To be replaced with integration call to Identity module later
-            var stub = new List<LookupDto>
-            {
-                new(Guid.Parse("33333333-3333-3333-3333-333333333333"), "Тарас Шевченко (Студент)"),
-                new(Guid.Parse("44444444-4444-4444-4444-444444444444"), "Михайло Грушевський (Студент)")
-            };
-
-            return Task.FromResult(Result<List<LookupDto>>.Success(stub));
+            var students = await userIntegrationService.GetStudentsAsync();
+            var result = students.Select(i => new Courses.Application.Common.Models.LookupDto(i.Id, i.Name)).ToList();
+            return Result<List<Courses.Application.Common.Models.LookupDto>>.Success(result);
         }
     }
 }

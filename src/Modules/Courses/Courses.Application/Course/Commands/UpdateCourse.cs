@@ -21,7 +21,7 @@ public static class UpdateCourse
         }
     }
 
-    public sealed class Handler(IUnitOfWork unitOfWork) : IRequestHandler<Command, Result<CourseResponseDto>>
+    public sealed class Handler(IUnitOfWork unitOfWork, Identity.Integration.IUserIntegrationService userIntegrationService) : IRequestHandler<Command, Result<CourseResponseDto>>
     {
         public async Task<Result<CourseResponseDto>> Handle(Command request, CancellationToken cancellationToken)
         {
@@ -37,9 +37,13 @@ public static class UpdateCourse
             course.UpdateAtTime();
 
             unitOfWork.Courses.Update(course);
+            
+            var instructorName = await userIntegrationService.GetUserNameByIdAsync(course.InstructorId) ?? "Unknown";
+
             return Result<CourseResponseDto>.Success(new CourseResponseDto(
                 course.Id,
                 course.InstructorId,
+                instructorName,
                 course.Title,
                 course.Description,
                 course.IsPublished,
